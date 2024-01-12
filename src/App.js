@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Checkout from './components/Checkout';
+import AddItem from './components/AddItem';
+import Item from './components/Items';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [items, setItems] = useState([]);
+  
+    const addItem = (item) => {
+      setItems([...items, item]);
+    };
+  
+    const removeItem = (index) => {
+      const updatedItems = [...items];
+      updatedItems.splice(index, 1);
+      setItems(updatedItems);
+    };
+  
+    return (
+      <div className='container p-5 my-5 row' style={{margin:"auto"}}>
+        <h1 className='mb-5'>Shopping Cart</h1>
+        <div className='mb-5'>
+        <AddItem onAdd={addItem} />
+        </div>
+        {items.map((item, index) => (
+          <Item key={index} item={item} onDelete={() => removeItem(index)} />
+        ))}
+
+        <Checkout items={items} />
+      </div>
+    );
+  };
 
 export default App;
